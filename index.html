@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Resource Tracker</title>
+  <title>Resource Tracker with Debugging Logic</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,72 +11,84 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      max-width: 650px;
+      max-width: 900px;
     }
     th, td {
       border: 1px solid #ccc;
-      padding: 10px;
+      padding: 8px;
       text-align: center;
     }
     th {
       background-color: #f4f4f4;
     }
     input[type="number"] {
-      width: 80%;
-      padding: 5px;
+      width: 70px;
+      padding: 4px;
       text-align: center;
     }
-    .calculated {
-      background-color: #fafafa;
+    .debug {
+      font-family: monospace;
+      font-size: 0.85em;
+      color: #555;
+      text-align: left;
+      background-color: #f9f9f9;
+    }
+    .total-needed {
       font-weight: bold;
+      color: #0056b3;
     }
   </style>
 </head>
 <body>
 
-  <h2>Resource Tracking Table</h2>
+  <h2>Resource Tracker (Supports Negative Values)</h2>
 
   <table>
     <thead>
       <tr>
-        <th>Amount Have</th>
-        <th>Amount Needed</th>
-        <th>Amount Left Needed</th>
+        <th style="width: 15%;">1st Col: Amount Have</th>
+        <th style="width: 25%;">2nd Col: Amount Needed</th>
+        <th style="width: 15%;">3rd Col: Amount Left Needed</th>
+        <th style="width: 45%;">Calculation Logic (Debug)</th>
       </tr>
     </thead>
     <tbody>
       <!-- Row 1 -->
       <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
-        <td><input type="number" value="0" class="needed-input" oninput="calculate()"></td>
+        <td><input type="number" value="-5" class="have" oninput="calculate()"></td>
+        <td><input type="number" value="10" class="needed-input" oninput="calculate()"></td>
         <td class="left-needed">0</td>
+        <td class="debug"></td>
       </tr>
       <!-- Row 2 -->
       <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td><input type="number" value="-2" class="have" oninput="calculate()"></td>
         <td>
-          <span class="needed-calc">0</span> 
-          + <input type="number" value="0" class="needed-input" style="width: 45%;" oninput="calculate()">
+          <span class="total-needed">0</span>
+          <br><small>(+ Extra Input: <input type="number" value="5" class="needed-input" oninput="calculate()">)</small>
         </td>
         <td class="left-needed">0</td>
+        <td class="debug"></td>
       </tr>
       <!-- Row 3 -->
       <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td><input type="number" value="4" class="have" oninput="calculate()"></td>
         <td>
-          <span class="needed-calc">0</span> 
-          + <input type="number" value="0" class="needed-input" style="width: 45%;" oninput="calculate()">
+          <span class="total-needed">0</span>
+          <br><small>(+ Extra Input: <input type="number" value="-3" class="needed-input" oninput="calculate()">)</small>
         </td>
         <td class="left-needed">0</td>
+        <td class="debug"></td>
       </tr>
       <!-- Row 4 -->
       <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td><input type="number" value="-10" class="have" oninput="calculate()"></td>
         <td>
-          <span class="needed-calc">0</span> 
-          + <input type="number" value="0" class="needed-input" style="width: 45%;" oninput="calculate()">
+          <span class="total-needed">0</span>
+          <br><small>(+ Extra Input: <input type="number" value="2" class="needed-input" oninput="calculate()">)</small>
         </td>
         <td class="left-needed">0</td>
+        <td class="debug"></td>
       </tr>
     </tbody>
   </table>
@@ -90,35 +102,46 @@
         const haveInput = row.querySelector('.have');
         const neededInput = row.querySelector('.needed-input');
         const leftNeededCell = row.querySelector('.left-needed');
+        const debugCell = row.querySelector('.debug');
 
-        const amountHave = parseFloat(haveInput.value) || 0;
-        const userInput = parseFloat(neededInput.value) || 0;
+        // Parse inputs directly without clamping to 0 (supports negatives)
+        const amountHave = haveInput.value === '' ? 0 : parseFloat(haveInput.value);
+        const userInput = neededInput.value === '' ? 0 : parseFloat(neededInput.value);
 
         let totalAmountNeeded = 0;
+        let debugText = "";
 
         if (index === 0) {
-          // Row 1: Directly equal to user input
+          // Row 1 formula
           totalAmountNeeded = userInput;
+          debugText = `Row 1 Needed = User Input (${userInput})`;
         } else {
-          // Rows 2-4: Formula = ((Prev Left Needed - Amount Have) * 3) + User Input
-          const baseCalculated = (prevLeftNeeded - amountHave) * 3;
-          
-          // Display the formula part inside the cell next to the input field
-          row.querySelector('.needed-calc').textContent = baseCalculated;
-          
-          totalAmountNeeded = baseCalculated + userInput;
+          // Rows 2-4 formula: ((Prev Left Needed - Amount Have) * 3) + User Input
+          const calcBase = (prevLeftNeeded - amountHave) * 3;
+          totalAmountNeeded = calcBase + userInput;
+
+          // Display total amount needed in 2nd column label
+          row.querySelector('.total-needed').textContent = totalAmountNeeded;
+
+          debugText = `Needed = ((${prevLeftNeeded} - (${amountHave})) * 3) + (${userInput})\n` +
+                      `Needed = ((${prevLeftNeeded - amountHave}) * 3) + (${userInput}) = ${totalAmountNeeded}`;
         }
 
-        // Left Needed = Amount Needed - Amount Have
+        // 3rd Col Formula: Left Needed = 2nd Col - 1st Col
         const leftNeeded = totalAmountNeeded - amountHave;
         leftNeededCell.textContent = leftNeeded;
 
-        // Carry forward to the next row calculation
+        debugText += `\nLeft Needed = ${totalAmountNeeded} - (${amountHave}) = ${leftNeeded}`;
+        
+        // Output debug log into the table row
+        debugCell.innerText = debugText;
+
+        // Carry forward exact signed value to next row
         prevLeftNeeded = leftNeeded;
       });
     }
 
-    // Run calculation once on page load
+    // Run initial calculation
     calculate();
   </script>
 
