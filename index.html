@@ -77,7 +77,7 @@
       gap: 12px;
     }
 
-    /* ID Text Box next to Save button */
+    /* ID Text Box */
     .id-input-wrapper {
       display: flex;
       align-items: center;
@@ -113,13 +113,39 @@
       box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15);
     }
 
+    /* Group Filter Dropdown */
+    .group-filter-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .group-filter-wrapper label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .filter-select {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 6px 10px;
+      outline: none;
+    }
+
     .sync-status {
       font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-muted);
     }
 
-    /* Debug View Switch */
+    /* Switches & Buttons */
     .toggle-group {
       display: flex;
       align-items: center;
@@ -138,11 +164,7 @@
       height: 22px;
     }
 
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { opacity: 0; width: 0; height: 0; }
 
     .slider {
       position: absolute;
@@ -156,25 +178,17 @@
     .slider:before {
       position: absolute;
       content: "";
-      height: 16px;
-      width: 16px;
-      left: 3px;
-      bottom: 3px;
+      height: 16px; width: 16px;
+      left: 3px; bottom: 3px;
       background-color: white;
       transition: 0.25s;
       border-radius: 50%;
       box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
 
-    input:checked + .slider {
-      background-color: var(--sky-blue);
-    }
+    input:checked + .slider { background-color: var(--sky-blue); }
+    input:checked + .slider:before { transform: translateX(22px); }
 
-    input:checked + .slider:before {
-      transform: translateX(22px);
-    }
-
-    /* Buttons */
     .btn-action {
       font-family: var(--font-body);
       font-size: 0.875rem;
@@ -200,11 +214,9 @@
       box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
     }
 
-    .btn-save:hover {
-      background-color: #b45309;
-    }
+    .btn-save:hover { background-color: #b45309; }
 
-    /* Grid Layout: Exactly 5 tables per row on 1080p screens */
+    /* Grid Layout: Exactly 5 tables per row on 1080p */
     .tables-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -212,20 +224,12 @@
       width: 100%;
     }
 
-    @media (max-width: 1600px) {
-      .tables-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    @media (max-width: 1280px) {
-      .tables-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 900px) {
-      .tables-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-      .tables-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 1600px) { .tables-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 1280px) { .tables-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .tables-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .tables-grid { grid-template-columns: 1fr; } }
 
-    /* Table Card */
+    /* Card Styling */
     .table-card {
       background: var(--card-bg);
       border-radius: 10px;
@@ -235,7 +239,11 @@
       padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
+    }
+
+    .table-card.hidden {
+      display: none !important;
     }
 
     .card-header {
@@ -243,7 +251,7 @@
       justify-content: space-between;
       align-items: center;
       background: var(--sky-light);
-      padding: 8px 10px;
+      padding: 6px 10px;
       border-radius: 6px;
       border: 1px solid var(--sky-border);
     }
@@ -259,6 +267,34 @@
       width: 85%;
     }
 
+    /* Group Bar in Card Body */
+    .card-group-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 2px;
+    }
+
+    .card-group-bar label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .card-group-input {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gold-accent);
+      background: #fffbe2;
+      border: 1px solid var(--gold-border);
+      border-radius: 4px;
+      padding: 2px 6px;
+      width: 100%;
+      outline: none;
+    }
+
     .btn-delete {
       background: transparent;
       border: none;
@@ -268,7 +304,6 @@
       padding: 2px 4px;
       border-radius: 4px;
       line-height: 1;
-      transition: color 0.15s ease, background 0.15s ease;
     }
 
     .btn-delete:hover {
@@ -287,9 +322,8 @@
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
       text-align: center;
-      letter-spacing: 0.03em;
     }
 
     td {
@@ -299,9 +333,7 @@
       border-bottom: 1px solid #f1f5f9;
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
+    tr:last-child td { border-bottom: none; }
 
     input[type="number"] {
       font-family: var(--font-mono);
@@ -316,7 +348,6 @@
       max-width: 52px;
       text-align: center;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     input[type="number"]:focus {
@@ -367,13 +398,8 @@
       word-break: break-all;
     }
 
-    .debug-col {
-      display: none;
-    }
-
-    body.show-debug .debug-col {
-      display: table-cell;
-    }
+    .debug-col { display: none; }
+    body.show-debug .debug-col { display: table-cell; }
 
     .debug-box {
       font-family: var(--font-mono);
@@ -394,15 +420,23 @@
   <div class="header">
     <div class="title-area">
       <h1>Resource <span>Tracker</span></h1>
-      <p>Multi-Profile Table Manager</p>
+      <p>Multi-Group Material Planner</p>
     </div>
     <div class="controls">
       <span class="sync-status" id="syncStatus">Ready</span>
       
-      <!-- Profile ID Field right next to Save to Cloud -->
+      <!-- Cached Device Profile ID -->
       <div class="id-input-wrapper">
         <label for="profileIdInput">Profile ID:</label>
-        <input type="text" id="profileIdInput" class="id-input" value="PROFILE_1" onchange="onProfileIdChange()">
+        <input type="text" id="profileIdInput" class="id-input" value="abc" onchange="onProfileIdChange()">
+      </div>
+
+      <!-- Group Filter -->
+      <div class="group-filter-wrapper">
+        <label for="groupFilter">Group:</label>
+        <select id="groupFilter" class="filter-select" onchange="filterTablesByGroup()">
+          <option value="ALL">All Groups</option>
+        </select>
       </div>
 
       <button class="btn-action btn-save" onclick="saveToCloud()">Save to Cloud</button>
@@ -418,14 +452,11 @@
     </div>
   </div>
 
-  <div class="tables-grid" id="tablesContainer">
-    <!-- Dynamic tables will populate here -->
-  </div>
+  <div class="tables-grid" id="tablesContainer"></div>
 
   <script>
-    // System Config
-    const MASTER_BIN_ID = '6a82a4c5da38895dfeeda0a4'; // Replace with your Master JSONBin ID
-    const API_KEY = '$2a$10$EUDuaRGXs5.vJOxYQg3JOeLrbQxtCkfj7O35Vl.0Lj46HEvKY9FDW';           // Replace with your JSONBin Master Key
+    const MASTER_BIN_ID = 'YOUR_MASTER_BIN_ID'; // Replace with your Master JSONBin ID
+    const API_KEY = 'YOUR_MASTER_KEY';           // Replace with your JSONBin Master Key
     const BASE_URL = `https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}`;
 
     let tableCounter = 0;
@@ -435,12 +466,16 @@
       document.body.classList.toggle('show-debug', isChecked);
     }
 
-    function createTableHTML(id, defaultName) {
+    function createTableHTML(id, defaultName, groupName) {
       return `
-        <div class="table-card" id="card-${id}">
+        <div class="table-card" id="card-${id}" data-group="${groupName}">
           <div class="card-header">
             <input type="text" class="card-title-input" value="${defaultName}" placeholder="Table Name...">
             <button class="btn-delete" title="Remove Table" onclick="removeTable(${id})">✕</button>
+          </div>
+          <div class="card-group-bar">
+            <label>Group:</label>
+            <input type="text" class="card-group-input" value="${groupName}" placeholder="e.g. Talents..." oninput="updateTableGroup(${id})">
           </div>
           <table>
             <thead>
@@ -483,23 +518,72 @@
       `;
     }
 
-    function addTable(customName) {
+    function addTable(customName, customGroup) {
       tableCounter++;
       const name = customName || `Table #${tableCounter}`;
+      const group = customGroup || "General";
       const container = document.getElementById('tablesContainer');
       
       const wrapper = document.createElement('div');
-      wrapper.innerHTML = createTableHTML(tableCounter, name);
+      wrapper.innerHTML = createTableHTML(tableCounter, name, group);
       const cardElement = wrapper.firstElementChild;
       
       container.appendChild(cardElement);
       calculateCard(tableCounter);
+      updateGroupFilterDropdown();
+      filterTablesByGroup();
       return tableCounter;
     }
 
     function removeTable(id) {
       const card = document.getElementById(`card-${id}`);
-      if (card) card.remove();
+      if (card) {
+        card.remove();
+        updateGroupFilterDropdown();
+      }
+    }
+
+    function updateTableGroup(id) {
+      const card = document.getElementById(`card-${id}`);
+      const groupInput = card.querySelector('.card-group-input');
+      const newGroup = groupInput.value.trim() || "General";
+      card.setAttribute('data-group', newGroup);
+      updateGroupFilterDropdown();
+    }
+
+    function updateGroupFilterDropdown() {
+      const select = document.getElementById('groupFilter');
+      const currentSelected = select.value;
+      const cards = document.querySelectorAll('.table-card');
+      const groups = new Set();
+
+      cards.forEach(card => {
+        const group = card.getAttribute('data-group') || "General";
+        groups.add(group);
+      });
+
+      select.innerHTML = '<option value="ALL">All Groups</option>';
+      groups.forEach(group => {
+        const option = document.createElement('option');
+        option.value = group;
+        option.textContent = group;
+        if (group === currentSelected) option.selected = true;
+        select.appendChild(option);
+      });
+    }
+
+    function filterTablesByGroup() {
+      const selectedGroup = document.getElementById('groupFilter').value;
+      const cards = document.querySelectorAll('.table-card');
+
+      cards.forEach(card => {
+        const cardGroup = card.getAttribute('data-group') || "General";
+        if (selectedGroup === "ALL" || cardGroup === selectedGroup) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
     }
 
     function calculateCard(id) {
@@ -540,7 +624,7 @@
       });
     }
 
-    // --- Profile & Data Logic ---
+    // --- Profile, Local Cache & Cloud Sync ---
     async function getMasterRecord() {
       try {
         const res = await fetch(`${BASE_URL}/latest`, {
@@ -565,14 +649,17 @@
         return;
       }
 
+      // Cache active profile locally to this device
+      localStorage.setItem('resource_tracker_last_profile', profileId);
+
       statusEl.textContent = 'Saving...';
 
-      // 1. Collect current tables
       const cards = document.querySelectorAll('.table-card');
       const tablesPayload = [];
 
       cards.forEach(card => {
         const title = card.querySelector('.card-title-input').value;
+        const group = card.querySelector('.card-group-input').value;
         const rowsData = [];
         
         card.querySelectorAll('tbody tr').forEach(row => {
@@ -582,10 +669,9 @@
           });
         });
 
-        tablesPayload.push({ title, rows: rowsData });
+        tablesPayload.push({ title, group, rows: rowsData });
       });
 
-      // 2. Fetch master dataset, update the ID key, and write back
       const masterData = await getMasterRecord();
       masterData.profiles[profileId] = tablesPayload;
 
@@ -614,6 +700,9 @@
       const statusEl = document.getElementById('syncStatus');
       statusEl.textContent = `Loading ${profileId}...`;
 
+      // Cache active profile locally to this device
+      localStorage.setItem('resource_tracker_last_profile', profileId);
+
       const masterData = await getMasterRecord();
       const tablesData = masterData.profiles[profileId];
 
@@ -622,7 +711,7 @@
 
       if (Array.isArray(tablesData) && tablesData.length > 0) {
         tablesData.forEach(data => {
-          const newId = addTable(data.title);
+          const newId = addTable(data.title, data.group || "General");
           const card = document.getElementById(`card-${newId}`);
           const rows = card.querySelectorAll('tbody tr');
 
@@ -636,7 +725,7 @@
         });
         statusEl.textContent = `Loaded ${profileId}`;
       } else {
-        statusEl.textContent = `New ID (${profileId})`;
+        statusEl.textContent = `New Profile (${profileId})`;
       }
     }
 
@@ -647,8 +736,17 @@
       }
     }
 
+    // Device Startup Routine: Read cached profile from device
+    function initDeviceCache() {
+      const cachedProfile = localStorage.getItem('resource_tracker_last_profile');
+      if (cachedProfile) {
+        document.getElementById('profileIdInput').value = cachedProfile;
+      }
+      onProfileIdChange();
+    }
+
     // Startup
-    onProfileIdChange();
+    initDeviceCache();
   </script>
 </body>
 </html>
