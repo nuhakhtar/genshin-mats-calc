@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Search Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f0f7ff;
+      --card-bg: #ffffff;
+      --sky-blue: #0284c7;
+      --sky-light: #e0f2fe;
+      --sky-border: #bae6fd;
+      --gold-accent: #d97706;
+      --gold-light: #fef3c7;
+      --gold-border: #fcd34d;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 16px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      border-top: 3px solid var(--gold-accent);
+      margin-bottom: 24px;
+    }
+
+    .btn-action {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: white;
+      background-color: var(--sky-blue);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .tables-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      width: 100%;
+    }
+
+    @media (max-width: 1600px) { .tables-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 1280px) { .tables-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px) { .tables-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .tables-grid { grid-template-columns: 1fr; } }
+
+    .table-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      border-top: 2px solid var(--gold-border);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Autocomplete Search Header */
+    .card-header {
+      position: relative;
+      background: var(--sky-light);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--sky-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .material-search-input {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0369a1;
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 85%;
+    }
+
+    .suggestions-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--sky-border);
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+    }
+
+    .suggestion-item {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .suggestion-item:hover {
+      background: var(--sky-light);
+      color: var(--sky-blue);
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: 0.65rem; color: var(--text-muted); padding-bottom: 6px; text-align: center; }
+    td { padding: 4px 2px; text-align: center; border-bottom: 1px solid #f1f5f9; }
+
+    input[type="number"] {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      width: 48px;
+      text-align: center;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+    }
+
+    .left-needed-badge {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0369a1;
+      background: var(--sky-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2>Searchable Material Manager</h2>
+    <button class="btn-action" onclick="addTable()">+ Add Material Table</button>
+  </div>
+
+  <div class="tables-grid" id="tablesContainer"></div>
+
+  <script>
+    // Expandable Material List
+    const MATERIAL_BANK = [
+      "Slime Condensate", "Slime Secretions", "Slime Concentrate",
+      "Damaged Mask", "Stained Mask", "Ominous Mask",
+      "Divining Scroll", "Sealed Scroll", "Forbidden Curse Scroll",
+      "Firm Arrowhead", "Sharp Arrowhead", "Weathered Arrowhead",
+      "Teachings of Freedom", "Guide to Freedom", "Philosophies of Freedom",
+      "Teachings of Resistance", "Guide to Resistance", "Philosophies of Resistance",
+      "Mora", "Hero's Wit", "Mystic Enhancement Ore"
+    ];
+
+    let tableCounter = 0;
+
+    function addTable() {
+      tableCounter++;
+      const container = document.getElementById('tablesContainer');
+      const card = document.createElement('div');
+      card.className = 'table-card';
+      card.id = `card-${tableCounter}`;
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <input type="text" class="material-search-input" placeholder="Search Material..." oninput="filterMaterials(${tableCounter})" onfocus="filterMaterials(${tableCounter})">
+          <button class="btn-delete" onclick="this.closest('.table-card').remove()">✕</button>
+          <div class="suggestions-list" id="suggestions-${tableCounter}"></div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Have</th><th>Needed</th><th>Left</th></tr>
+          </thead>
+          <tbody>
+            ${[1, 2, 3, 4].map(() => `
+              <tr>
+                <td><input type="number" value="0"></td>
+                <td><input type="number" value="0"></td>
+                <td><span class="left-needed-badge">0</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+
+      container.appendChild(card);
+    }
+
+    function filterMaterials(id) {
+      const card = document.getElementById(`card-${id}`);
+      const input = card.querySelector('.material-search-input');
+      const list = card.querySelector('.suggestions-list');
+      const query = input.value.toLowerCase();
+
+      list.innerHTML = '';
+      const matches = MATERIAL_BANK.filter(item => item.toLowerCase().includes(query));
+
+      if (matches.length > 0 && document.activeElement === input) {
+        list.style.display = 'block';
+        matches.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.textContent = item;
+          div.onclick = () => {
+            input.value = item;
+            list.style.display = 'none';
+          };
+          list.appendChild(div);
+        });
+      } else {
+        list.style.display = 'none';
+      }
+    }
+
+    // Hide dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('material-search-input')) {
+        document.querySelectorAll('.suggestions-list').forEach(el => el.style.display = 'none');
+      }
+    });
+
+    addTable();
+  </script>
+</body>
+</html>
