@@ -3,29 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material Resource Calculator</title>
+  <title>Resource Tracker for Kids</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --genshin-bg: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.9);
-      --card-border: #475569;
-      --gold-primary: #f59e0b;
-      --gold-bright: #fbbf24;
-      --gold-glow: rgba(251, 191, 36, 0.4);
-      --cyan-accent: #06b6d4;
-      --cyan-bright: #22d3ee;
-      --cyan-glow: rgba(34, 211, 238, 0.3);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --input-bg: #090d16;
-      --input-border: #334155;
-      --radius: 8px;
-      --font-title: 'Cinzel', serif;
-      --font-body: 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --bg-color: #f4f9ff;
+      --card-bg: #ffffff;
+      --primary-pink: #ff6b8b;
+      --primary-purple: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-yellow: #facc15;
+      --text-dark: #2d3748;
+      --text-muted: #718096;
+      --border-color: #e2e8f0;
+      --font-fun: 'Fredoka', cursive, sans-serif;
+      --font-body: 'Quicksand', sans-serif;
     }
 
     * {
@@ -36,65 +30,64 @@
 
     body {
       font-family: var(--font-body);
-      background-color: var(--genshin-bg);
+      background-color: var(--bg-color);
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 80% 100%, rgba(251, 191, 36, 0.08) 0%, transparent 40%);
-      color: var(--text-main);
+        radial-gradient(circle at 10% 20%, rgba(255, 107, 139, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+      color: var(--text-dark);
       min-height: 100vh;
-      padding: 24px 16px;
+      padding: 24px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Bar Header */
-    .dashboard-header {
+    /* Header Styling */
+    .header {
       max-width: 100%;
       margin: 0 auto 24px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 16px;
-      border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+      background: #ffffff;
+      padding: 16px 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.08);
     }
 
     .title-area h1 {
-      font-family: var(--font-title);
+      font-family: var(--font-fun);
       font-size: 1.8rem;
-      letter-spacing: 0.05em;
-      color: var(--gold-bright);
-      text-transform: uppercase;
-      text-shadow: 0 0 16px var(--gold-glow);
+      color: var(--primary-purple);
+      letter-spacing: 0.5px;
     }
 
     .title-area p {
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
-      margin-top: 2px;
+      font-weight: 600;
     }
 
-    .header-controls {
+    .controls {
       display: flex;
       align-items: center;
       gap: 20px;
     }
 
-    /* Debug Toggle Switch */
-    .toggle-container {
+    /* Toggle Switch */
+    .toggle-group {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-family: var(--font-title);
-      font-size: 0.8rem;
-      color: var(--cyan-bright);
+      font-family: var(--font-fun);
+      color: var(--text-dark);
+      font-size: 0.95rem;
       cursor: pointer;
-      user-select: none;
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 44px;
-      height: 22px;
+      width: 50px;
+      height: 26px;
     }
 
     .switch input {
@@ -107,68 +100,59 @@
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #1e293b;
-      border: 1px solid var(--card-border);
-      transition: .3s;
-      border-radius: 20px;
+      background-color: #cbd5e1;
+      transition: 0.3s;
+      border-radius: 30px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 14px;
-      width: 14px;
+      height: 20px;
+      width: 20px;
       left: 3px;
       bottom: 3px;
-      background-color: var(--text-muted);
-      transition: .3s;
+      background-color: white;
+      transition: 0.3s;
       border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     input:checked + .slider {
-      background-color: rgba(6, 182, 212, 0.3);
-      border-color: var(--cyan-bright);
-      box-shadow: 0 0 10px var(--cyan-glow);
+      background-color: var(--primary-pink);
     }
 
     input:checked + .slider:before {
-      transform: translateX(22px);
-      background-color: var(--cyan-bright);
+      transform: translateX(24px);
     }
 
-    /* Genshin Styled Button */
-    .btn-genshin {
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #0f172a;
-      background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%);
-      border: 1px solid #fef08a;
-      border-radius: 20px;
+    /* Add Matrix Button */
+    .btn-add {
+      font-family: var(--font-fun);
+      font-size: 1rem;
+      color: white;
+      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+      border: none;
+      border-radius: 30px;
       padding: 10px 24px;
       cursor: pointer;
-      box-shadow: 0 0 14px var(--gold-glow);
+      box-shadow: 0 4px 14px rgba(255, 107, 139, 0.4);
       transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
     }
 
-    .btn-genshin:hover {
+    .btn-add:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 22px rgba(251, 191, 36, 0.7);
+      box-shadow: 0 6px 20px rgba(255, 107, 139, 0.6);
     }
 
-    /* Grid Layout: Exactly 5 tables per row on 1920px screens */
+    /* Grid System: 5 tables per row on 1080p display */
     .tables-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 12px;
+      gap: 16px;
       width: 100%;
     }
 
-    /* Responsive adjustments for smaller screens */
     @media (max-width: 1600px) {
       .tables-grid { grid-template-columns: repeat(4, 1fr); }
     }
@@ -182,70 +166,64 @@
       .tables-grid { grid-template-columns: 1fr; }
     }
 
-    /* Card Styling */
+    /* Bright Table Card */
     .table-card {
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+      border: 2px solid #f1f5f9;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      gap: 10px;
+      transition: transform 0.2s;
     }
 
-    .table-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+    .table-card:hover {
+      transform: translateY(-4px);
+      border-color: #e2e8f0;
     }
 
     /* Card Header */
     .card-header {
-      padding: 10px 12px;
-      background: rgba(15, 23, 42, 0.6);
-      border-bottom: 1px solid var(--card-border);
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      background: #faf5ff;
+      padding: 8px 12px;
+      border-radius: 12px;
     }
 
     .card-title-input {
-      font-family: var(--font-title);
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--gold-bright);
+      font-family: var(--font-fun);
+      font-size: 1.05rem;
+      color: var(--primary-purple);
       background: transparent;
       border: none;
-      border-bottom: 1px dashed transparent;
       outline: none;
-      width: 80%;
-      transition: border-color 0.2s;
-    }
-
-    .card-title-input:focus, .card-title-input:hover {
-      border-bottom-color: var(--gold-bright);
+      width: 85%;
     }
 
     .btn-delete {
-      background: none;
+      background: #ffe4e6;
       border: none;
-      color: var(--text-muted);
+      color: #f43f5e;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 1.1rem;
-      line-height: 1;
-      padding: 2px 6px;
-      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-delete:hover {
-      color: #ef4444;
+      background: #f43f5e;
+      color: white;
     }
 
-    /* Table Design */
+    /* Table Structure */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -253,51 +231,41 @@
     }
 
     th {
-      font-family: var(--font-title);
-      font-size: 0.68rem;
-      letter-spacing: 0.05em;
-      color: #cbd5e1;
+      font-family: var(--font-fun);
+      font-size: 0.75rem;
+      color: var(--text-muted);
       text-transform: uppercase;
-      background: rgba(15, 23, 42, 0.4);
-      padding: 8px 4px;
-      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
       text-align: center;
     }
 
     td {
-      padding: 8px 4px;
-      border-bottom: 1px solid rgba(71, 85, 105, 0.4);
+      padding: 6px 2px;
       text-align: center;
       vertical-align: middle;
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    /* Inputs & Form Elements */
+    /* Inputs & Badges */
     input[type="number"] {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #ffffff;
-      background: var(--input-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 4px;
-      padding: 4px 2px;
+      font-family: var(--font-fun);
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 4px;
       width: 100%;
-      max-width: 55px;
+      max-width: 50px;
       text-align: center;
       outline: none;
-      transition: all 0.2s ease;
     }
 
     input[type="number"]:focus {
-      border-color: var(--cyan-bright);
-      box-shadow: 0 0 8px var(--cyan-glow);
+      border-color: var(--primary-pink);
+      background: white;
     }
 
-    .needed-cell-wrapper {
+    .needed-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -305,14 +273,13 @@
     }
 
     .needed-total {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #ffffff;
+      font-family: var(--font-fun);
+      font-size: 0.95rem;
+      color: var(--primary-purple);
     }
 
     .sub-input {
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -320,27 +287,24 @@
     }
 
     .sub-input input {
-      max-width: 45px;
+      max-width: 40px;
       padding: 2px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
     }
 
-    /* Dynamic Left Needed Badge */
-    .left-needed {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--cyan-bright);
-      background: rgba(6, 182, 212, 0.15);
-      border: 1px solid rgba(34, 211, 238, 0.4);
-      padding: 3px 6px;
-      border-radius: 4px;
+    .left-needed-badge {
+      font-family: var(--font-fun);
+      font-size: 0.95rem;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 4px 8px;
+      border-radius: 10px;
       display: inline-block;
-      width: 90%;
+      width: 85%;
       word-break: break-all;
     }
 
-    /* Debug Log Styling */
+    /* Debug Box */
     .debug-col {
       display: none;
     }
@@ -350,13 +314,12 @@
     }
 
     .debug-box {
-      font-family: var(--font-mono);
+      font-family: monospace;
       font-size: 0.65rem;
-      line-height: 1.3;
-      color: #cbd5e1;
-      background: rgba(9, 13, 22, 0.8);
-      border: 1px solid rgba(71, 85, 105, 0.5);
-      border-radius: 4px;
+      line-height: 1.2;
+      color: #475569;
+      background: #f1f5f9;
+      border-radius: 8px;
       padding: 4px;
       text-align: left;
       white-space: pre-wrap;
@@ -365,25 +328,25 @@
 </head>
 <body>
 
-  <div class="dashboard-header">
+  <div class="header">
     <div class="title-area">
-      <h1>Resource Optimization Matrix</h1>
-      <p>Multi-Domain Material & Talent Progression Planner</p>
+      <h1>⭐ Resource Tracker</h1>
+      <p>Calculate everything you need easily!</p>
     </div>
-    <div class="header-controls">
-      <label class="toggle-container">
+    <div class="controls">
+      <label class="toggle-group">
         <span>Debug View</span>
         <div class="switch">
           <input type="checkbox" id="debugToggle" onchange="toggleDebugView()">
           <span class="slider"></span>
         </div>
       </label>
-      <button class="btn-genshin" onclick="addTable()">+ Add Matrix</button>
+      <button class="btn-add" onclick="addTable()">+ Add Table</button>
     </div>
   </div>
 
   <div class="tables-grid" id="tablesContainer">
-    <!-- Dynamic tables spawn here -->
+    <!-- Dynamic tables will spawn here -->
   </div>
 
   <script>
@@ -402,8 +365,8 @@
       return `
         <div class="table-card" id="card-${id}">
           <div class="card-header">
-            <input type="text" class="card-title-input" value="${defaultName}" placeholder="Domain Name...">
-            <button class="btn-delete" title="Remove Matrix" onclick="removeTable(${id})">✕</button>
+            <input type="text" class="card-title-input" value="${defaultName}" placeholder="Item Name...">
+            <button class="btn-delete" title="Remove Table" onclick="removeTable(${id})">✕</button>
           </div>
           <table>
             <thead>
@@ -411,7 +374,7 @@
                 <th>Have</th>
                 <th>Needed</th>
                 <th>Left</th>
-                <th class="debug-col">Debug Logic</th>
+                <th class="debug-col">Logic</th>
               </tr>
             </thead>
             <tbody>
@@ -421,7 +384,7 @@
                     <input type="number" value="0" class="have" oninput="calculateCard(${id})">
                   </td>
                   <td>
-                    <div class="needed-cell-wrapper">
+                    <div class="needed-wrapper">
                       ${idx === 0 
                         ? `<input type="number" value="0" class="needed-input" oninput="calculateCard(${id})">`
                         : `<span class="needed-total">0</span>
@@ -433,7 +396,7 @@
                     </div>
                   </td>
                   <td>
-                    <span class="left-needed">0</span>
+                    <span class="left-needed-badge left-needed">0</span>
                   </td>
                   <td class="debug-col">
                     <div class="debug-box debug"></div>
@@ -448,7 +411,7 @@
 
     function addTable(customName) {
       tableCounter++;
-      const name = customName || `Matrix #${tableCounter}`;
+      const name = customName || `Table #${tableCounter}`;
       const container = document.getElementById('tablesContainer');
       
       const wrapper = document.createElement('div');
@@ -502,12 +465,12 @@
       });
     }
 
-    // Initialize with 5 tables on load to showcase 1 full row on 1080p screens
-    addTable("Char Talent T1");
-    addTable("Char Talent T2");
-    addTable("Weapon Asc T1");
-    addTable("Weapon Asc T2");
-    addTable("Artifact EXP");
+    // Default 5 tables to fill one full row on 1080p
+    addTable("Wood Blocks");
+    addTable("Iron Ores");
+    addTable("Gold Coins");
+    addTable("Magic Crystals");
+    addTable("Energy Gems");
   </script>
 
 </body>
