@@ -11,7 +11,7 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      max-width: 600px;
+      max-width: 650px;
     }
     th, td {
       border: 1px solid #ccc;
@@ -25,6 +25,10 @@
       width: 80%;
       padding: 5px;
       text-align: center;
+    }
+    .calculated {
+      background-color: #fafafa;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -43,26 +47,35 @@
     <tbody>
       <!-- Row 1 -->
       <tr>
-        <td><input type="number" value="0" oninput="calculate()"></td>
-        <td><input type="number" value="0" oninput="calculate()"></td>
+        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td><input type="number" value="0" class="needed-input" oninput="calculate()"></td>
         <td class="left-needed">0</td>
       </tr>
       <!-- Row 2 -->
       <tr>
-        <td><input type="number" value="0" oninput="calculate()"></td>
-        <td><input type="number" value="0" oninput="calculate()"></td>
+        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td>
+          <span class="needed-calc">0</span> 
+          + <input type="number" value="0" class="needed-input" style="width: 45%;" oninput="calculate()">
+        </td>
         <td class="left-needed">0</td>
       </tr>
       <!-- Row 3 -->
       <tr>
-        <td><input type="number" value="0" oninput="calculate()"></td>
-        <td><input type="number" value="0" oninput="calculate()"></td>
+        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td>
+          <span class="needed-calc">0</span> 
+          + <input type="number" value="0" class="needed-input" style="width: 45%;" oninput="calculate()">
+        </td>
         <td class="left-needed">0</td>
       </tr>
       <!-- Row 4 -->
       <tr>
-        <td><input type="number" value="0" oninput="calculate()"></td>
-        <td><input type="number" value="0" oninput="calculate()"></td>
+        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
+        <td>
+          <span class="needed-calc">0</span> 
+          + <input type="number" value="0" class="needed-input" style="width: 45%;" oninput="calculate()">
+        </td>
         <td class="left-needed">0</td>
       </tr>
     </tbody>
@@ -71,39 +84,41 @@
   <script>
     function calculate() {
       const rows = document.querySelectorAll('tbody tr');
-      let previousLeftNeeded = 0;
+      let prevLeftNeeded = 0;
 
       rows.forEach((row, index) => {
-        const inputs = row.querySelectorAll('input');
-        const amountHaveInput = inputs[0];
-        const amountNeededInput = inputs[1];
+        const haveInput = row.querySelector('.have');
+        const neededInput = row.querySelector('.needed-input');
         const leftNeededCell = row.querySelector('.left-needed');
 
-        const amountHave = parseFloat(amountHaveInput.value) || 0;
+        const amountHave = parseFloat(haveInput.value) || 0;
+        const userInput = parseFloat(neededInput.value) || 0;
 
-        if (index > 0) {
-          // Row 2 to 4: Amount Needed = ((Left Needed Prev Row - Amount Have) * 3) + User Input
-          const userInputNeeded = parseFloat(amountNeededInput.value) || 0;
-          const calculatedNeeded = ((previousLeftNeeded - amountHave) * 3) + userInputNeeded;
-          
-          // Display the calculated result, while keeping the input field editable
-          amountNeededInput.dataset.calculated = calculatedNeeded;
-          var currentAmountNeeded = calculatedNeeded;
+        let totalAmountNeeded = 0;
+
+        if (index === 0) {
+          // Row 1: Directly equal to user input
+          totalAmountNeeded = userInput;
         } else {
-          // Row 1: Direct user input
-          var currentAmountNeeded = parseFloat(amountNeededInput.value) || 0;
+          // Rows 2-4: Formula = ((Prev Left Needed - Amount Have) * 3) + User Input
+          const baseCalculated = (prevLeftNeeded - amountHave) * 3;
+          
+          // Display the formula part inside the cell next to the input field
+          row.querySelector('.needed-calc').textContent = baseCalculated;
+          
+          totalAmountNeeded = baseCalculated + userInput;
         }
 
         // Left Needed = Amount Needed - Amount Have
-        const leftNeeded = currentAmountNeeded - amountHave;
+        const leftNeeded = totalAmountNeeded - amountHave;
         leftNeededCell.textContent = leftNeeded;
 
-        // Update previous value for the next iteration
-        previousLeftNeeded = leftNeeded;
+        // Carry forward to the next row calculation
+        prevLeftNeeded = leftNeeded;
       });
     }
 
-    // Initial calculation on page load
+    // Run calculation once on page load
     calculate();
   </script>
 
