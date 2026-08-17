@@ -2,97 +2,282 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Resource Tracker with Correct Logic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #fafafa;
+      --card-bg: #ffffff;
+      --border: #e4e4e7;
+      --border-focus: #18181b;
+      --text: #09090b;
+      --text-muted: #71717a;
+      --accent: #2563eb;
+      --accent-light: #eff6ff;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+      -webkit-font-smoothing: antialiased;
     }
-    table {
-      border-collapse: collapse;
+
+    .container {
       width: 100%;
-      max-width: 950px;
+      max-width: 960px;
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
+
+    .header {
+      margin-bottom: 24px;
     }
-    th {
-      background-color: #f4f4f4;
+
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
     }
-    input[type="number"] {
-      width: 70px;
-      padding: 4px;
-      text-align: center;
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+      overflow: hidden;
     }
-    .debug {
-      font-family: monospace;
-      font-size: 0.85em;
-      color: #444;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
       text-align: left;
-      background-color: #f9f9f9;
-      white-space: pre-wrap;
     }
+
+    th {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      background-color: var(--bg);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      font-size: 0.875rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Input styling */
+    .input-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input[type="number"] {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text);
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) - 2px);
+      padding: 6px 10px;
+      width: 80px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--border-focus);
+      background-color: var(--card-bg);
+    }
+
+    /* Column Specifics */
+    .col-needed-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .total-needed {
-      font-weight: bold;
-      color: #0056b3;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .user-input-subtext {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .left-needed {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    .left-needed-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      background-color: var(--accent-light);
+      border-radius: calc(var(--radius) - 2px);
+    }
+
+    /* Debug Column */
+    .debug-container {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      background: var(--bg);
+      padding: 8px 10px;
+      border-radius: calc(var(--radius) - 2px);
+      border: 1px solid var(--border);
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
 
-  <h2>Resource Tracking Table</h2>
+  <div class="container">
+    <div class="header">
+      <h1>Resource Tracker</h1>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th style="width: 15%;">1st Col: Amount Have</th>
-        <th style="width: 25%;">2nd Col: Amount Needed</th>
-        <th style="width: 15%;">3rd Col: Amount Left Needed</th>
-        <th style="width: 45%;">Calculation Logic (Debug)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Row 1 -->
-      <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
-        <td><input type="number" value="0" class="needed-input" oninput="calculate()"></td>
-        <td class="left-needed">0</td>
-        <td class="debug"></td>
-      </tr>
-      <!-- Row 2 -->
-      <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
-        <td>
-          <span class="total-needed">0</span>
-          <br><small>(+ User Input: <input type="number" value="0" class="needed-input" oninput="calculate()">)</small>
-        </td>
-        <td class="left-needed">0</td>
-        <td class="debug"></td>
-      </tr>
-      <!-- Row 3 -->
-      <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
-        <td>
-          <span class="total-needed">0</span>
-          <br><small>(+ User Input: <input type="number" value="0" class="needed-input" oninput="calculate()">)</small>
-        </td>
-        <td class="left-needed">0</td>
-        <td class="debug"></td>
-      </tr>
-      <!-- Row 4 -->
-      <tr>
-        <td><input type="number" value="0" class="have" oninput="calculate()"></td>
-        <td>
-          <span class="total-needed">0</span>
-          <br><small>(+ User Input: <input type="number" value="0" class="needed-input" oninput="calculate()">)</small>
-        </td>
-        <td class="left-needed">0</td>
-        <td class="debug"></td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 18%;">Amount Have</th>
+            <th style="width: 25%;">Amount Needed</th>
+            <th style="width: 20%;">Left Needed</th>
+            <th style="width: 37%;">Calculation Logic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row 1 -->
+          <tr>
+            <td>
+              <input type="number" value="0" class="have" oninput="calculate()">
+            </td>
+            <td>
+              <div class="col-needed-content">
+                <input type="number" value="0" class="needed-input" oninput="calculate()">
+              </div>
+            </td>
+            <td>
+              <span class="left-needed-badge">
+                <span class="left-needed">0</span>
+              </span>
+            </td>
+            <td>
+              <div class="debug-container debug"></div>
+            </td>
+          </tr>
+
+          <!-- Row 2 -->
+          <tr>
+            <td>
+              <input type="number" value="0" class="have" oninput="calculate()">
+            </td>
+            <td>
+              <div class="col-needed-content">
+                <span class="total-needed">0</span>
+                <div class="user-input-subtext">
+                  <span>+ User Input:</span>
+                  <input type="number" value="0" class="needed-input" oninput="calculate()">
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="left-needed-badge">
+                <span class="left-needed">0</span>
+              </span>
+            </td>
+            <td>
+              <div class="debug-container debug"></div>
+            </td>
+          </tr>
+
+          <!-- Row 3 -->
+          <tr>
+            <td>
+              <input type="number" value="0" class="have" oninput="calculate()">
+            </td>
+            <td>
+              <div class="col-needed-content">
+                <span class="total-needed">0</span>
+                <div class="user-input-subtext">
+                  <span>+ User Input:</span>
+                  <input type="number" value="0" class="needed-input" oninput="calculate()">
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="left-needed-badge">
+                <span class="left-needed">0</span>
+              </span>
+            </td>
+            <td>
+              <div class="debug-container debug"></div>
+            </td>
+          </tr>
+
+          <!-- Row 4 -->
+          <tr>
+            <td>
+              <input type="number" value="0" class="have" oninput="calculate()">
+            </td>
+            <td>
+              <div class="col-needed-content">
+                <span class="total-needed">0</span>
+                <div class="user-input-subtext">
+                  <span>+ User Input:</span>
+                  <input type="number" value="0" class="needed-input" oninput="calculate()">
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="left-needed-badge">
+                <span class="left-needed">0</span>
+              </span>
+            </td>
+            <td>
+              <div class="debug-container debug"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <script>
     function calculate() {
@@ -105,7 +290,6 @@
         const leftNeededCell = row.querySelector('.left-needed');
         const debugCell = row.querySelector('.debug');
 
-        // Parse inputs cleanly without default numbers (supports negative numbers)
         const amountHave = haveInput.value === '' ? 0 : parseFloat(haveInput.value);
         const userInput = neededInput.value === '' ? 0 : parseFloat(neededInput.value);
 
@@ -113,34 +297,24 @@
         let debugText = "";
 
         if (index === 0) {
-          // Row 1: Amount Needed is strictly User Input
           totalAmountNeeded = userInput;
-          debugText = `Row 1 Needed = User Input (${userInput})`;
+          debugText = `Needed = User Input (${userInput})`;
         } else {
-          // Rows 2-4: Formula = (Amount Left from prev row * 3) + User Input
           totalAmountNeeded = (prevLeftNeeded * 3) + userInput;
-
-          // Update total display in 2nd column
           row.querySelector('.total-needed').textContent = totalAmountNeeded;
-
-          debugText = `Needed = (${prevLeftNeeded} * 3) + (${userInput}) = ${totalAmountNeeded}`;
+          debugText = `Needed = (${prevLeftNeeded} × 3) + (${userInput}) = ${totalAmountNeeded}`;
         }
 
-        // 3rd Column: Amount Left Needed = 2nd Column - 1st Column
         const leftNeeded = totalAmountNeeded - amountHave;
         leftNeededCell.textContent = leftNeeded;
 
         debugText += `\nLeft Needed = ${totalAmountNeeded} - (${amountHave}) = ${leftNeeded}`;
-        
-        // Render step-by-step logic in debug column
         debugCell.textContent = debugText;
 
-        // Pass exact leftNeeded value down to the next row
         prevLeftNeeded = leftNeeded;
       });
     }
 
-    // Run initial calculation with 0 defaults
     calculate();
   </script>
 
