@@ -550,16 +550,16 @@
               ${[1, 2, 3, 4].map((row, idx) => `
                 <tr>
                   <td>
-                    <input type="number" value="0" class="have" oninput="recalculateAllSameMaterials('${materialName.toLowerCase()}')">
+                    <input type="number" value="0" class="have" oninput="triggerRecalculation(${id})">
                   </td>
                   <td>
                     <div class="needed-wrapper">
                       ${idx === 0 
-                        ? `<input type="number" value="0" class="needed-input" oninput="recalculateAllSameMaterials('${materialName.toLowerCase()}')">`
+                        ? `<input type="number" value="0" class="needed-input" oninput="triggerRecalculation(${id})">`
                         : `<span class="needed-total">0</span>
                            <div class="sub-input">
                              <span>+</span>
-                             <input type="number" value="0" class="needed-input" oninput="recalculateAllSameMaterials('${materialName.toLowerCase()}')">
+                             <input type="number" value="0" class="needed-input" oninput="triggerRecalculation(${id})">
                            </div>`
                       }
                     </div>
@@ -621,6 +621,7 @@
       container.appendChild(cardElement);
       updateAllCardGroupDropdowns();
       recalculateAllSameMaterials(name.toLowerCase());
+      recalculateAllTables();
       filterTables();
       return tableCounter;
     }
@@ -631,7 +632,15 @@
         const materialKey = card.getAttribute('data-material');
         card.remove();
         recalculateAllSameMaterials(materialKey);
+        recalculateAllTables();
       }
+    }
+
+    function triggerRecalculation(id) {
+      const card = document.getElementById(`card-${id}`);
+      if (!card) return;
+      const materialKey = card.getAttribute('data-material');
+      recalculateAllSameMaterials(materialKey);
     }
 
     function onCardGroupChange(id, selectEl) {
@@ -676,6 +685,14 @@
       recalculateAllSameMaterials(newName);
     }
 
+    function recalculateAllTables() {
+      const uniqueMaterials = new Set();
+      document.querySelectorAll('.table-card').forEach(card => {
+        uniqueMaterials.add(card.getAttribute('data-material'));
+      });
+      uniqueMaterials.forEach(m => recalculateAllSameMaterials(m));
+    }
+
     function recalculateAllSameMaterials(materialKey) {
       if (!materialKey) return;
 
@@ -709,11 +726,16 @@
         matchingCards.forEach(card => {
           const rows = card.querySelectorAll('tbody tr');
           const row = rows[rowIndex];
+          if (!row) return;
+
           const haveInput = row.querySelector('.have');
           const neededInput = row.querySelector('.needed-input');
 
-          sumHave += haveInput.value === '' ? 0 : parseFloat(haveInput.value);
-          sumUserInputNeeded += neededInput.value === '' ? 0 : parseFloat(neededInput.value);
+          const haveVal = haveInput.value === '' ? 0 : parseFloat(haveInput.value);
+          const neededVal = neededInput.value === '' ? 0 : parseFloat(neededInput.value);
+
+          sumHave += isNaN(haveVal) ? 0 : haveVal;
+          sumUserInputNeeded += isNaN(neededVal) ? 0 : neededVal;
         });
 
         let rowTotalNeeded = 0;
@@ -733,12 +755,17 @@
         matchingCards.forEach(card => {
           const rows = card.querySelectorAll('tbody tr');
           const row = rows[rowIndex];
+          if (!row) return;
 
           if (rowIndex > 0) {
-            row.querySelector('.needed-total').textContent = rowTotalNeeded;
+            const totalEl = row.querySelector('.needed-total');
+            if (totalEl) totalEl.textContent = rowTotalNeeded;
           }
-          row.querySelector('.left-needed').textContent = rowLeftNeeded;
-          row.querySelector('.debug').textContent = debugFormula;
+          const leftEl = row.querySelector('.left-needed');
+          if (leftEl) leftEl.textContent = rowLeftNeeded;
+
+          const debugEl = row.querySelector('.debug');
+          if (debugEl) debugEl.textContent = debugFormula;
         });
 
         prevLeftNeeded = rowLeftNeeded;
@@ -911,15 +938,7 @@
           });
         });
 
-        const processedMaterials = new Set();
-        tablesData.forEach(data => {
-          const key = data.title.toLowerCase();
-          if (!processedMaterials.has(key)) {
-            recalculateAllSameMaterials(key);
-            processedMaterials.add(key);
-          }
-        });
-
+        recalculateAllTables();
         statusEl.textContent = `Loaded (${profileId})`;
       } else {
         renderGroupTabs();
