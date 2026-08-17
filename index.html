@@ -14,6 +14,9 @@
       --sky-blue: #0284c7;
       --sky-light: #e0f2fe;
       --sky-border: #bae6fd;
+      --gold-accent: #d97706;
+      --gold-light: #fef3c7;
+      --gold-border: #fcd34d;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --border-color: #e2e8f0;
@@ -47,6 +50,7 @@
       padding: 16px 24px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
+      border-top: 3px solid var(--gold-accent);
       box-shadow: 0 2px 8px rgba(2, 132, 199, 0.04);
     }
 
@@ -55,6 +59,10 @@
       font-weight: 700;
       color: var(--sky-blue);
       letter-spacing: -0.01em;
+    }
+
+    .title-area h1 span {
+      color: var(--gold-accent);
     }
 
     .title-area p {
@@ -66,7 +74,14 @@
     .controls {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
+    }
+
+    /* Status Indicator */
+    .sync-status {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
     }
 
     /* Debug View Switch */
@@ -124,27 +139,37 @@
       transform: translateX(22px);
     }
 
-    /* Stark White / Sky Blue Button */
-    .btn-add {
+    /* Buttons */
+    .btn-action {
       font-family: var(--font-body);
       font-size: 0.875rem;
       font-weight: 600;
       color: white;
       background-color: var(--sky-blue);
-      border: none;
+      border: 1px solid var(--sky-blue);
       border-radius: 8px;
-      padding: 10px 20px;
+      padding: 9px 16px;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-      transition: background-color 0.15s ease, transform 0.1s ease;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
+      transition: all 0.15s ease;
     }
 
-    .btn-add:hover {
+    .btn-action:hover {
       background-color: #0369a1;
       transform: translateY(-1px);
     }
 
-    /* Grid Layout: Exactly 5 tables per row on 1080p (1920px) screens */
+    .btn-save {
+      background-color: var(--gold-accent);
+      border-color: var(--gold-border);
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
+    }
+
+    .btn-save:hover {
+      background-color: #b45309;
+    }
+
+    /* Grid Layout: Exactly 5 tables per row on 1080p screens */
     .tables-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -171,6 +196,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
       border: 1px solid var(--border-color);
+      border-top: 2px solid var(--gold-border);
       padding: 12px;
       display: flex;
       flex-direction: column;
@@ -262,9 +288,9 @@
     }
 
     input[type="number"]:focus {
-      border-color: var(--sky-blue);
+      border-color: var(--gold-accent);
       background: #ffffff;
-      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+      box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15);
     }
 
     .needed-wrapper {
@@ -336,10 +362,11 @@
 
   <div class="header">
     <div class="title-area">
-      <h1>Resource Tracker</h1>
+      <h1>Resource <span>Tracker</span></h1>
       <p>Multi-Table Quantity & Left Needed Calculator</p>
     </div>
     <div class="controls">
+      <span class="sync-status" id="syncStatus">Loaded from Bin</span>
       <label class="toggle-group">
         <span>Debug View</span>
         <div class="switch">
@@ -347,7 +374,8 @@
           <span class="slider"></span>
         </div>
       </label>
-      <button class="btn-add" onclick="addTable()">+ Add Table</button>
+      <button class="btn-action btn-save" onclick="saveToBin()">Save to Cloud</button>
+      <button class="btn-action" onclick="addTable()">+ Add Table</button>
     </div>
   </div>
 
@@ -356,6 +384,11 @@
   </div>
 
   <script>
+    // --- JSONBin.io Configuration ---
+    const BIN_ID = '6a82a4c5da38895dfeeda0a4'; // Replace with your JSONBin ID
+    const API_KEY = '$2a$10$EUDuaRGXs5.vJOxYQg3JOeLrbQxtCkfj7O35Vl.0Lj46HEvKY9FDW'; // Replace with your JSONBin Master Key
+    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+
     let tableCounter = 0;
 
     function toggleDebugView() {
@@ -426,6 +459,7 @@
       
       container.appendChild(cardElement);
       calculateCard(tableCounter);
+      return tableCounter;
     }
 
     function removeTable(id) {
@@ -470,6 +504,92 @@
         prevLeftNeeded = leftNeeded;
       });
     }
+
+    // --- JSONBin API Save & Load Functions ---
+    async function saveToBin() {
+      const statusEl = document.getElementById('syncStatus');
+      statusEl.textContent = 'Saving...';
+      
+      const cards = document.querySelectorAll('.table-card');
+      const payload = [];
+
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title-input').value;
+        const rowsData = [];
+        
+        card.querySelectorAll('tbody tr').forEach(row => {
+          rowsData.push({
+            have: row.querySelector('.have').value,
+            needed: row.querySelector('.needed-input').value
+          });
+        });
+
+        payload.push({ title, rows: rowsData });
+      });
+
+      try {
+        const response = await fetch(JSONBIN_URL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': API_KEY
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          statusEl.textContent = 'Saved!';
+          setTimeout(() => statusEl.textContent = '', 3000);
+        } else {
+          statusEl.textContent = 'Save failed.';
+        }
+      } catch (err) {
+        statusEl.textContent = 'Network error.';
+      }
+    }
+
+    async function loadFromBin() {
+      const statusEl = document.getElementById('syncStatus');
+      statusEl.textContent = 'Loading...';
+
+      try {
+        const response = await fetch(`${JSONBIN_URL}/latest`, {
+          headers: { 'X-Master-Key': API_KEY }
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          const tablesData = result.record;
+
+          document.getElementById('tablesContainer').innerHTML = '';
+          tableCounter = 0;
+
+          if (Array.isArray(tablesData) && tablesData.length > 0) {
+            tablesData.forEach(data => {
+              const newId = addTable(data.title);
+              const card = document.getElementById(`card-${newId}`);
+              const rows = card.querySelectorAll('tbody tr');
+
+              data.rows.forEach((rowData, idx) => {
+                if (rows[idx]) {
+                  rows[idx].querySelector('.have').value = rowData.have;
+                  rows[idx].querySelector('.needed-input').value = rowData.needed;
+                }
+              });
+              calculateCard(newId);
+            });
+            statusEl.textContent = 'Loaded from Cloud';
+          } else {
+            statusEl.textContent = 'No data found';
+          }
+        }
+      } catch (err) {
+        statusEl.textContent = 'Load error';
+      }
+    }
+
+    // Run load on page startup
+    loadFromBin();
   </script>
 
 </body>
