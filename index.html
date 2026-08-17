@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resource Tracker for Kids</title>
+  <title>Resource Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #f4f9ff;
+      --bg-color: #f0f7ff;
       --card-bg: #ffffff;
-      --primary-pink: #ff6b8b;
-      --primary-purple: #8b5cf6;
-      --accent-cyan: #06b6d4;
-      --accent-yellow: #facc15;
-      --text-dark: #2d3748;
-      --text-muted: #718096;
+      --sky-blue: #0284c7;
+      --sky-light: #e0f2fe;
+      --sky-border: #bae6fd;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
       --border-color: #e2e8f0;
-      --font-fun: 'Fredoka', cursive, sans-serif;
-      --font-body: 'Quicksand', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     * {
@@ -31,39 +30,37 @@
     body {
       font-family: var(--font-body);
       background-color: var(--bg-color);
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 107, 139, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
-      color: var(--text-dark);
+      color: var(--text-main);
       min-height: 100vh;
       padding: 24px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Header Styling */
+    /* Top Navigation Header */
     .header {
       max-width: 100%;
       margin: 0 auto 24px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #ffffff;
+      background: var(--card-bg);
       padding: 16px 24px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.08);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.04);
     }
 
     .title-area h1 {
-      font-family: var(--font-fun);
-      font-size: 1.8rem;
-      color: var(--primary-purple);
-      letter-spacing: 0.5px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--sky-blue);
+      letter-spacing: -0.01em;
     }
 
     .title-area p {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      font-weight: 600;
+      margin-top: 2px;
     }
 
     .controls {
@@ -72,22 +69,23 @@
       gap: 20px;
     }
 
-    /* Toggle Switch */
+    /* Debug View Switch */
     .toggle-group {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-family: var(--font-fun);
-      color: var(--text-dark);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
       cursor: pointer;
+      user-select: none;
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 50px;
-      height: 26px;
+      width: 44px;
+      height: 22px;
     }
 
     .switch input {
@@ -101,55 +99,56 @@
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #cbd5e1;
-      transition: 0.3s;
-      border-radius: 30px;
+      transition: 0.25s;
+      border-radius: 20px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
+      height: 16px;
+      width: 16px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: 0.3s;
+      transition: 0.25s;
       border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
 
     input:checked + .slider {
-      background-color: var(--primary-pink);
+      background-color: var(--sky-blue);
     }
 
     input:checked + .slider:before {
-      transform: translateX(24px);
+      transform: translateX(22px);
     }
 
-    /* Add Matrix Button */
+    /* Stark White / Sky Blue Button */
     .btn-add {
-      font-family: var(--font-fun);
-      font-size: 1rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
       color: white;
-      background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+      background-color: var(--sky-blue);
       border: none;
-      border-radius: 30px;
-      padding: 10px 24px;
+      border-radius: 8px;
+      padding: 10px 20px;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(255, 107, 139, 0.4);
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+      transition: background-color 0.15s ease, transform 0.1s ease;
     }
 
     .btn-add:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 107, 139, 0.6);
+      background-color: #0369a1;
+      transform: translateY(-1px);
     }
 
-    /* Grid System: 5 tables per row on 1080p display */
+    /* Grid Layout: Exactly 5 tables per row on 1080p (1920px) screens */
     .tables-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
       width: 100%;
     }
 
@@ -166,22 +165,16 @@
       .tables-grid { grid-template-columns: 1fr; }
     }
 
-    /* Bright Table Card */
+    /* Table Card */
     .table-card {
       background: var(--card-bg);
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-      border: 2px solid #f1f5f9;
-      padding: 14px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: transform 0.2s;
-    }
-
-    .table-card:hover {
-      transform: translateY(-4px);
-      border-color: #e2e8f0;
     }
 
     /* Card Header */
@@ -189,15 +182,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #faf5ff;
-      padding: 8px 12px;
-      border-radius: 12px;
+      background: var(--sky-light);
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--sky-border);
     }
 
     .card-title-input {
-      font-family: var(--font-fun);
-      font-size: 1.05rem;
-      color: var(--primary-purple);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #0369a1;
       background: transparent;
       border: none;
       outline: none;
@@ -205,25 +200,23 @@
     }
 
     .btn-delete {
-      background: #ffe4e6;
+      background: transparent;
       border: none;
-      color: #f43f5e;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      font-weight: bold;
+      color: var(--text-muted);
+      font-size: 1rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 2px 4px;
+      border-radius: 4px;
+      line-height: 1;
+      transition: color 0.15s ease, background 0.15s ease;
     }
 
     .btn-delete:hover {
-      background: #f43f5e;
+      background: #ef4444;
       color: white;
     }
 
-    /* Table Structure */
+    /* Table Architecture */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -231,38 +224,47 @@
     }
 
     th {
-      font-family: var(--font-fun);
-      font-size: 0.75rem;
+      font-size: 0.68rem;
+      font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
       padding-bottom: 8px;
       text-align: center;
+      letter-spacing: 0.03em;
     }
 
     td {
       padding: 6px 2px;
       text-align: center;
       vertical-align: middle;
+      border-bottom: 1px solid #f1f5f9;
     }
 
-    /* Inputs & Badges */
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Input & Numerical Styling */
     input[type="number"] {
-      font-family: var(--font-fun);
-      font-size: 0.95rem;
-      color: var(--text-dark);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
       background: #f8fafc;
-      border: 2px solid #cbd5e1;
-      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
       padding: 4px;
       width: 100%;
-      max-width: 50px;
+      max-width: 52px;
       text-align: center;
       outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     input[type="number"]:focus {
-      border-color: var(--primary-pink);
-      background: white;
+      border-color: var(--sky-blue);
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
     }
 
     .needed-wrapper {
@@ -273,9 +275,10 @@
     }
 
     .needed-total {
-      font-family: var(--font-fun);
-      font-size: 0.95rem;
-      color: var(--primary-purple);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
     }
 
     .sub-input {
@@ -287,24 +290,26 @@
     }
 
     .sub-input input {
-      max-width: 40px;
+      max-width: 42px;
       padding: 2px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
     .left-needed-badge {
-      font-family: var(--font-fun);
-      font-size: 0.95rem;
-      color: #0284c7;
-      background: #e0f2fe;
-      padding: 4px 8px;
-      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0369a1;
+      background: var(--sky-light);
+      border: 1px solid var(--sky-border);
+      padding: 4px 6px;
+      border-radius: 6px;
       display: inline-block;
-      width: 85%;
+      width: 88%;
       word-break: break-all;
     }
 
-    /* Debug Box */
+    /* Debug Box Styling */
     .debug-col {
       display: none;
     }
@@ -314,13 +319,14 @@
     }
 
     .debug-box {
-      font-family: monospace;
+      font-family: var(--font-mono);
       font-size: 0.65rem;
-      line-height: 1.2;
+      line-height: 1.35;
       color: #475569;
-      background: #f1f5f9;
-      border-radius: 8px;
-      padding: 4px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 4px 6px;
       text-align: left;
       white-space: pre-wrap;
     }
@@ -330,8 +336,8 @@
 
   <div class="header">
     <div class="title-area">
-      <h1>⭐ Resource Tracker</h1>
-      <p>Calculate everything you need easily!</p>
+      <h1>Resource Tracker</h1>
+      <p>Multi-Table Quantity & Left Needed Calculator</p>
     </div>
     <div class="controls">
       <label class="toggle-group">
@@ -346,7 +352,7 @@
   </div>
 
   <div class="tables-grid" id="tablesContainer">
-    <!-- Dynamic tables will spawn here -->
+    <!-- Starts empty with no default tables -->
   </div>
 
   <script>
@@ -365,7 +371,7 @@
       return `
         <div class="table-card" id="card-${id}">
           <div class="card-header">
-            <input type="text" class="card-title-input" value="${defaultName}" placeholder="Item Name...">
+            <input type="text" class="card-title-input" value="${defaultName}" placeholder="Table Name...">
             <button class="btn-delete" title="Remove Table" onclick="removeTable(${id})">✕</button>
           </div>
           <table>
@@ -464,13 +470,6 @@
         prevLeftNeeded = leftNeeded;
       });
     }
-
-    // Default 5 tables to fill one full row on 1080p
-    addTable("Wood Blocks");
-    addTable("Iron Ores");
-    addTable("Gold Coins");
-    addTable("Magic Crystals");
-    addTable("Energy Gems");
   </script>
 
 </body>
