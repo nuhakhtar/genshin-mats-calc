@@ -31,27 +31,27 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       min-height: 100vh;
-      padding: 24px;
+      padding: 16px;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Navigation Header */
+    /* Top Header */
     .header {
       max-width: 100%;
-      margin: 0 auto 16px auto;
+      margin: 0 0 12px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--card-bg);
-      padding: 16px 24px;
-      border-radius: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
       border: 1px solid var(--border-color);
       border-top: 3px solid var(--gold-accent);
       box-shadow: 0 2px 8px rgba(2, 132, 199, 0.04);
     }
 
     .title-area h1 {
-      font-size: 1.4rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--sky-blue);
       letter-spacing: -0.01em;
@@ -60,29 +60,29 @@
     .title-area h1 span { color: var(--gold-accent); }
 
     .title-area p {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
     .controls {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .id-input-wrapper {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       background: var(--sky-light);
       border: 1px solid var(--sky-border);
-      border-radius: 8px;
-      padding: 4px 8px;
+      border-radius: 6px;
+      padding: 3px 6px;
     }
 
     .id-input-wrapper label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
       color: #0369a1;
       text-transform: uppercase;
@@ -90,14 +90,14 @@
 
     .id-input {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-main);
       background: #ffffff;
       border: 1px solid var(--sky-border);
-      border-radius: 6px;
-      padding: 4px 8px;
-      width: 110px;
+      border-radius: 4px;
+      padding: 3px 6px;
+      width: 100px;
       outline: none;
     }
 
@@ -106,35 +106,30 @@
       box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15);
     }
 
-    .material-filter-wrapper input {
+    .filter-input, .day-select {
       font-family: var(--font-body);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-main);
       background: #ffffff;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 6px 10px;
-      width: 160px;
+      border-radius: 6px;
+      padding: 5px 8px;
       outline: none;
     }
 
-    .material-filter-wrapper input:focus {
-      border-color: var(--sky-blue);
-      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
-    }
+    .filter-input { width: 140px; }
 
     .sync-status {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--text-muted);
     }
 
-    /* Switches & Buttons */
     .toggle-group {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
+      gap: 6px;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-muted);
       cursor: pointer;
@@ -144,8 +139,8 @@
     .switch {
       position: relative;
       display: inline-block;
-      width: 44px;
-      height: 22px;
+      width: 38px;
+      height: 20px;
     }
 
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -155,59 +150,58 @@
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #cbd5e1;
-      transition: 0.25s;
+      transition: 0.2s;
       border-radius: 20px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 16px; width: 16px;
+      height: 14px; width: 14px;
       left: 3px; bottom: 3px;
       background-color: white;
-      transition: 0.25s;
+      transition: 0.2s;
       border-radius: 50%;
       box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
 
     input:checked + .slider { background-color: var(--sky-blue); }
-    input:checked + .slider:before { transform: translateX(22px); }
+    input:checked + .slider:before { transform: translateX(18px); }
 
     .btn-action {
       font-family: var(--font-body);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: white;
       background-color: var(--sky-blue);
       border: 1px solid var(--sky-blue);
-      border-radius: 8px;
-      padding: 7px 12px;
+      border-radius: 6px;
+      padding: 6px 10px;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
+      box-shadow: 0 2px 4px rgba(2, 132, 199, 0.15);
       transition: all 0.15s ease;
     }
 
     .btn-action:hover {
       background-color: #0369a1;
-      transform: translateY(-1px);
     }
 
     .btn-save {
       background-color: var(--gold-accent);
       border-color: var(--gold-border);
-      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
+      box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
     }
 
     .btn-save:hover { background-color: #b45309; }
 
-    /* Group Filter Tabs */
+    /* Group Bar */
     .group-tabs-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 12px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 2px;
     }
 
     .group-tab-wrapper {
@@ -215,8 +209,8 @@
       align-items: center;
       background: #ffffff;
       border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 2px 4px 2px 10px;
+      border-radius: 16px;
+      padding: 2px 4px 2px 8px;
     }
 
     .group-tab-wrapper.active {
@@ -226,7 +220,7 @@
 
     .group-tab-btn {
       font-family: var(--font-body);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       background: transparent;
       border: none;
@@ -235,35 +229,27 @@
       white-space: nowrap;
     }
 
-    .group-tab-wrapper.active .group-tab-btn {
-      color: #ffffff;
-    }
+    .group-tab-wrapper.active .group-tab-btn { color: #ffffff; }
 
     .group-delete-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       cursor: pointer;
-      margin-left: 6px;
-      padding: 2px 4px;
+      margin-left: 4px;
+      padding: 1px 3px;
       border-radius: 50%;
     }
 
-    .group-tab-wrapper.active .group-delete-btn {
-      color: #ffffff;
-    }
-
-    .group-delete-btn:hover {
-      background: rgba(239, 68, 68, 0.2);
-      color: #ef4444;
-    }
+    .group-tab-wrapper.active .group-delete-btn { color: #ffffff; }
+    .group-delete-btn:hover { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
     /* Grid Layout: 5 tables per row on 1080p */
     .tables-grid {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 14px;
+      gap: 10px;
       width: 100%;
     }
 
@@ -275,14 +261,14 @@
     /* Card Styling */
     .table-card {
       background: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
       border: 1px solid var(--border-color);
       border-top: 2px solid var(--gold-border);
-      padding: 12px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .table-card.hidden { display: none !important; }
@@ -292,14 +278,14 @@
       justify-content: space-between;
       align-items: center;
       background: var(--sky-light);
-      padding: 6px 10px;
-      border-radius: 6px;
+      padding: 4px 8px;
+      border-radius: 4px;
       border: 1px solid var(--sky-border);
     }
 
     .card-title-input {
       font-family: var(--font-body);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: #0369a1;
       background: transparent;
@@ -312,71 +298,73 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
+      flex-wrap: wrap;
     }
 
-    .card-group-select {
+    .card-group-select, .card-day-select {
       font-family: var(--font-body);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      color: var(--gold-accent);
-      background: var(--gold-light);
-      border: 1px solid var(--gold-border);
-      padding: 2px 6px;
       border-radius: 4px;
       outline: none;
       cursor: pointer;
+      padding: 1px 4px;
+    }
+
+    .card-group-select {
+      color: var(--gold-accent);
+      background: var(--gold-light);
+      border: 1px solid var(--gold-border);
       text-transform: uppercase;
     }
 
+    .card-day-select {
+      color: #0369a1;
+      background: #f0f9ff;
+      border: 1px solid var(--sky-border);
+    }
+
     .combined-tag {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       font-weight: 600;
       color: #0369a1;
       background: var(--sky-light);
       border: 1px solid var(--sky-border);
-      padding: 2px 6px;
+      padding: 1px 4px;
       border-radius: 4px;
       display: none;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 100%;
     }
 
     .btn-delete {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
-      padding: 2px 4px;
-      border-radius: 4px;
+      padding: 1px 3px;
+      border-radius: 3px;
       line-height: 1;
     }
 
-    .btn-delete:hover {
-      background: #ef4444;
-      color: white;
-    }
+    .btn-delete:hover { background: #ef4444; color: white; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
     th {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      padding-bottom: 6px;
+      padding-bottom: 4px;
       text-align: center;
     }
 
     td {
-      padding: 6px 2px;
+      padding: 4px 1px;
       text-align: center;
       vertical-align: middle;
       border-bottom: 1px solid #f1f5f9;
@@ -386,15 +374,15 @@
 
     input[type="number"] {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-main);
       background: #f8fafc;
       border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      padding: 4px;
+      border-radius: 4px;
+      padding: 2px;
       width: 100%;
-      max-width: 52px;
+      max-width: 48px;
       text-align: center;
       outline: none;
     }
@@ -409,57 +397,57 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 1px;
     }
 
     .needed-total {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-main);
     }
 
     .sub-input {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 1px;
     }
 
     .sub-input input {
-      max-width: 42px;
-      padding: 2px;
-      font-size: 0.75rem;
+      max-width: 38px;
+      padding: 1px;
+      font-size: 0.7rem;
     }
 
     .left-needed-badge {
       font-family: var(--font-mono);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: #0369a1;
       background: var(--sky-light);
       border: 1px solid var(--sky-border);
-      padding: 4px 6px;
-      border-radius: 6px;
+      padding: 2px 4px;
+      border-radius: 4px;
       display: inline-block;
-      width: 88%;
+      width: 90%;
       word-break: break-all;
     }
 
-    /* Debug Column Logic */
+    /* Debug Column */
     .debug-col { display: none; }
     body.show-debug .debug-col { display: table-cell; }
 
     .debug-box {
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      line-height: 1.35;
+      font-size: 0.6rem;
+      line-height: 1.25;
       color: #475569;
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 4px 6px;
+      border-radius: 4px;
+      padding: 2px 4px;
       text-align: left;
       white-space: pre-wrap;
     }
@@ -476,14 +464,23 @@
       <span class="sync-status" id="syncStatus">Ready</span>
       
       <div class="id-input-wrapper">
-        <label for="profileIdInput">Profile ID:</label>
+        <label for="profileIdInput">ID:</label>
         <input type="text" id="profileIdInput" class="id-input" placeholder="Enter ID...">
       </div>
-      <button class="btn-action" onclick="loadActiveProfile()">Load Profile</button>
+      <button class="btn-action" onclick="loadActiveProfile()">Load</button>
 
       <div class="material-filter-wrapper">
-        <input type="text" id="materialFilterInput" placeholder="Filter Material..." oninput="filterTables()">
+        <input type="text" id="materialFilterInput" class="filter-input" placeholder="Filter Material..." oninput="filterTables()">
       </div>
+
+      <!-- Filter by Day -->
+      <select id="dayFilterSelect" class="day-select" onchange="filterTables()">
+        <option value="ALL">All Days</option>
+        <option value="Everyday">Everyday Only</option>
+        <option value="Mon/Thu/Sun">Mon/Thu/Sun</option>
+        <option value="Tue/Fri/Sun">Tue/Fri/Sun</option>
+        <option value="Wed/Sat/Sun">Wed/Sat/Sun</option>
+      </select>
 
       <button class="btn-action btn-save" onclick="saveToCloud()">Save to Cloud</button>
       <button class="btn-action" onclick="addTable()">+ Add Table</button>
@@ -508,17 +505,25 @@
     const BASE_URL = `https://api.jsonbin.io/v3/b/${MASTER_BIN_ID}`;
 
     let tableCounter = 0;
-    let registeredGroups = new Set(["General"]);
+    let registeredGroups = new Set();
     let activeGroupTab = "ALL";
+
+    const DAY_OPTIONS = [
+      "Everyday",
+      "Mon/Thu/Sun",
+      "Tue/Fri/Sun",
+      "Wed/Sat/Sun"
+    ];
 
     function toggleDebugView() {
       const isChecked = document.getElementById('debugToggle').checked;
       document.body.classList.toggle('show-debug', isChecked);
     }
 
-    function createTableHTML(id, materialName, selectedGroup) {
+    function createTableHTML(id, materialName, selectedGroup, selectedDay) {
+      const dayVal = selectedDay || "Everyday";
       return `
-        <div class="table-card" id="card-${id}" data-material="${materialName.toLowerCase()}" data-group="${selectedGroup}">
+        <div class="table-card" id="card-${id}" data-material="${materialName.toLowerCase()}" data-group="${selectedGroup}" data-day="${dayVal}">
           <div class="card-header">
             <input type="text" class="card-title-input" value="${materialName}" placeholder="Material Name..." oninput="onMaterialNameChange(${id})">
             <button class="btn-delete" title="Remove Table" onclick="removeTable(${id})">✕</button>
@@ -526,6 +531,9 @@
           <div class="card-sub-bar">
             <select class="card-group-select" onchange="onCardGroupChange(${id}, this)">
               ${renderGroupOptions(selectedGroup)}
+            </select>
+            <select class="card-day-select" onchange="onCardDayChange(${id}, this)">
+              ${DAY_OPTIONS.map(d => `<option value="${d}" ${d === dayVal ? 'selected' : ''}>${d}</option>`).join('')}
             </select>
           </div>
           <div class="combined-tag" id="combined-tag-${id}"></div>
@@ -587,17 +595,27 @@
       });
     }
 
-    function addTable(materialName, groupName) {
+    function addTable(materialName, groupName, dayName) {
       tableCounter++;
       const name = materialName || `Material #${tableCounter}`;
-      const group = groupName || "General";
       
-      registeredGroups.add(group);
+      let group = groupName;
+      if (!group) {
+        if (registeredGroups.size === 0) {
+          group = "Group 1";
+          registeredGroups.add(group);
+        } else {
+          group = Array.from(registeredGroups)[0];
+        }
+      } else {
+        registeredGroups.add(group);
+      }
+      
       renderGroupTabs();
 
       const container = document.getElementById('tablesContainer');
       const wrapper = document.createElement('div');
-      wrapper.innerHTML = createTableHTML(tableCounter, name, group);
+      wrapper.innerHTML = createTableHTML(tableCounter, name, group, dayName || "Everyday");
       const cardElement = wrapper.firstElementChild;
       
       container.appendChild(cardElement);
@@ -642,6 +660,12 @@
       filterTables();
     }
 
+    function onCardDayChange(id, selectEl) {
+      const card = document.getElementById(`card-${id}`);
+      card.setAttribute('data-day', selectEl.value);
+      filterTables();
+    }
+
     function onMaterialNameChange(id) {
       const card = document.getElementById(`card-${id}`);
       const newName = card.querySelector('.card-title-input').value.trim().toLowerCase();
@@ -652,7 +676,6 @@
       recalculateAllSameMaterials(newName);
     }
 
-    // Recalculates identical material tables & updates the Group Combination tag
     function recalculateAllSameMaterials(materialKey) {
       if (!materialKey) return;
 
@@ -661,7 +684,6 @@
 
       if (matchingCards.length === 0) return;
 
-      // Extract unique groups contributing to this material
       const contributingGroups = Array.from(new Set(matchingCards.map(c => c.getAttribute('data-group'))));
       const isMultiGroup = contributingGroups.length > 1;
       const combinedLabelText = isMultiGroup ? `Combined: ${contributingGroups.join(' + ')}` : '';
@@ -736,10 +758,9 @@
         const wrapper = document.createElement('div');
         wrapper.className = `group-tab-wrapper ${activeGroupTab === group ? 'active' : ''}`;
         
-        const isDefaultGeneral = group === 'General';
         wrapper.innerHTML = `
           <button class="group-tab-btn" onclick="switchGroupTab('${group}')">${group}</button>
-          ${!isDefaultGeneral ? `<button class="group-delete-btn" title="Delete Group" onclick="deleteGroup('${group}')">✕</button>` : ''}
+          <button class="group-delete-btn" title="Delete Group" onclick="deleteGroup('${group}')">✕</button>
         `;
         container.appendChild(wrapper);
       });
@@ -752,11 +773,12 @@
     }
 
     function deleteGroup(groupName) {
-      if (confirm(`Delete group "${groupName}"? Tables in this group will be reassigned to General.`)) {
+      if (confirm(`Delete group "${groupName}"? Tables in this group will also be removed.`)) {
         registeredGroups.delete(groupName);
         
         document.querySelectorAll(`.table-card[data-group="${groupName}"]`).forEach(card => {
-          card.setAttribute('data-group', 'General');
+          const id = card.id.replace('card-', '');
+          removeTable(id);
         });
 
         if (activeGroupTab === groupName) {
@@ -771,16 +793,23 @@
 
     function filterTables() {
       const filterText = document.getElementById('materialFilterInput').value.toLowerCase().trim();
+      const selectedDayFilter = document.getElementById('dayFilterSelect').value;
       const cards = document.querySelectorAll('.table-card');
 
       cards.forEach(card => {
         const material = card.getAttribute('data-material');
         const group = card.getAttribute('data-group');
+        const day = card.getAttribute('data-day') || "Everyday";
 
         const matchesGroup = (activeGroupTab === 'ALL' || group === activeGroupTab);
         const matchesText = (filterText === '' || material.includes(filterText));
+        
+        let matchesDay = true;
+        if (selectedDayFilter !== 'ALL') {
+          matchesDay = (day === selectedDayFilter);
+        }
 
-        if (matchesGroup && matchesText) {
+        if (matchesGroup && matchesText && matchesDay) {
           card.classList.remove('hidden');
         } else {
           card.classList.add('hidden');
@@ -788,7 +817,7 @@
       });
     }
 
-    // Cloud Data Sync
+    // Cloud Persistence
     async function getMasterRecord() {
       try {
         const res = await fetch(`${BASE_URL}/latest`, { headers: { 'X-Master-Key': API_KEY } });
@@ -815,6 +844,7 @@
       cards.forEach(card => {
         const title = card.querySelector('.card-title-input').value;
         const group = card.getAttribute('data-group');
+        const day = card.getAttribute('data-day') || "Everyday";
         const rowsData = [];
         
         card.querySelectorAll('tbody tr').forEach(row => {
@@ -824,7 +854,7 @@
           });
         });
 
-        tablesPayload.push({ title, group, rows: rowsData });
+        tablesPayload.push({ title, group, day, rows: rowsData });
       });
 
       const masterData = await getMasterRecord();
@@ -861,7 +891,7 @@
 
       document.getElementById('tablesContainer').innerHTML = '';
       tableCounter = 0;
-      registeredGroups = new Set(["General"]);
+      registeredGroups = new Set();
 
       if (profileData) {
         if (profileData.groups) profileData.groups.forEach(g => registeredGroups.add(g));
@@ -869,7 +899,7 @@
 
         const tablesData = profileData.tables || [];
         tablesData.forEach(data => {
-          const newId = addTable(data.title, data.group || "General");
+          const newId = addTable(data.title, data.group, data.day || "Everyday");
           const card = document.getElementById(`card-${newId}`);
           const rows = card.querySelectorAll('tbody tr');
 
