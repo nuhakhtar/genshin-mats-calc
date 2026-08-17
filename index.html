@@ -39,7 +39,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Navigation Header */
+    /* Top Navigation Header */
     .header {
       max-width: 100%;
       margin: 0 auto 24px auto;
@@ -74,10 +74,10 @@
     .controls {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    /* ID Text Box */
+    /* ID Text Box Container */
     .id-input-wrapper {
       display: flex;
       align-items: center;
@@ -113,30 +113,28 @@
       box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.15);
     }
 
-    /* Group Filter Dropdown */
-    .group-filter-wrapper {
+    /* Filter by Material Search Bar */
+    .material-filter-wrapper {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .group-filter-wrapper label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .filter-select {
+    .filter-input {
       font-family: var(--font-body);
       font-size: 0.85rem;
-      font-weight: 600;
       color: var(--text-main);
       background: #ffffff;
       border: 1px solid var(--border-color);
       border-radius: 8px;
       padding: 6px 10px;
+      width: 160px;
       outline: none;
+    }
+
+    .filter-input:focus {
+      border-color: var(--sky-blue);
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
     }
 
     .sync-status {
@@ -145,7 +143,7 @@
       color: var(--text-muted);
     }
 
-    /* Switches & Buttons */
+    /* Debug View Switch */
     .toggle-group {
       display: flex;
       align-items: center;
@@ -189,15 +187,16 @@
     input:checked + .slider { background-color: var(--sky-blue); }
     input:checked + .slider:before { transform: translateX(22px); }
 
+    /* Action Buttons */
     .btn-action {
       font-family: var(--font-body);
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       font-weight: 600;
       color: white;
       background-color: var(--sky-blue);
       border: 1px solid var(--sky-blue);
       border-radius: 8px;
-      padding: 8px 14px;
+      padding: 7px 12px;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
       transition: all 0.15s ease;
@@ -239,7 +238,7 @@
       padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .table-card.hidden {
@@ -251,7 +250,7 @@
       justify-content: space-between;
       align-items: center;
       background: var(--sky-light);
-      padding: 6px 10px;
+      padding: 8px 10px;
       border-radius: 6px;
       border: 1px solid var(--sky-border);
     }
@@ -267,34 +266,6 @@
       width: 85%;
     }
 
-    /* Group Bar in Card Body */
-    .card-group-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0 2px;
-    }
-
-    .card-group-bar label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .card-group-input {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--gold-accent);
-      background: #fffbe2;
-      border: 1px solid var(--gold-border);
-      border-radius: 4px;
-      padding: 2px 6px;
-      width: 100%;
-      outline: none;
-    }
-
     .btn-delete {
       background: transparent;
       border: none;
@@ -304,6 +275,7 @@
       padding: 2px 4px;
       border-radius: 4px;
       line-height: 1;
+      transition: color 0.15s ease, background 0.15s ease;
     }
 
     .btn-delete:hover {
@@ -322,8 +294,9 @@
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
-      padding-bottom: 6px;
+      padding-bottom: 8px;
       text-align: center;
+      letter-spacing: 0.03em;
     }
 
     td {
@@ -348,6 +321,7 @@
       max-width: 52px;
       text-align: center;
       outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     input[type="number"]:focus {
@@ -420,23 +394,21 @@
   <div class="header">
     <div class="title-area">
       <h1>Resource <span>Tracker</span></h1>
-      <p>Multi-Group Material Planner</p>
+      <p>Multi-Profile Material Planner</p>
     </div>
     <div class="controls">
       <span class="sync-status" id="syncStatus">Ready</span>
       
-      <!-- Cached Device Profile ID -->
+      <!-- Profile ID Input & Load Button -->
       <div class="id-input-wrapper">
         <label for="profileIdInput">Profile ID:</label>
-        <input type="text" id="profileIdInput" class="id-input" value="abc" onchange="onProfileIdChange()">
+        <input type="text" id="profileIdInput" class="id-input" placeholder="Enter ID...">
       </div>
+      <button class="btn-action" onclick="loadActiveProfile()">Load Profile</button>
 
-      <!-- Group Filter -->
-      <div class="group-filter-wrapper">
-        <label for="groupFilter">Group:</label>
-        <select id="groupFilter" class="filter-select" onchange="filterTablesByGroup()">
-          <option value="ALL">All Groups</option>
-        </select>
+      <!-- Filter by Material Input -->
+      <div class="material-filter-wrapper">
+        <input type="text" id="materialFilterInput" class="filter-input" placeholder="Filter by Material..." oninput="filterTablesByMaterial()">
       </div>
 
       <button class="btn-action btn-save" onclick="saveToCloud()">Save to Cloud</button>
@@ -452,7 +424,9 @@
     </div>
   </div>
 
-  <div class="tables-grid" id="tablesContainer"></div>
+  <div class="tables-grid" id="tablesContainer">
+    <!-- Starts completely empty -->
+  </div>
 
   <script>
     const MASTER_BIN_ID = 'YOUR_MASTER_BIN_ID'; // Replace with your Master JSONBin ID
@@ -466,16 +440,12 @@
       document.body.classList.toggle('show-debug', isChecked);
     }
 
-    function createTableHTML(id, defaultName, groupName) {
+    function createTableHTML(id, defaultName) {
       return `
-        <div class="table-card" id="card-${id}" data-group="${groupName}">
+        <div class="table-card" id="card-${id}">
           <div class="card-header">
-            <input type="text" class="card-title-input" value="${defaultName}" placeholder="Table Name...">
+            <input type="text" class="card-title-input" value="${defaultName}" placeholder="Material Name..." oninput="filterTablesByMaterial()">
             <button class="btn-delete" title="Remove Table" onclick="removeTable(${id})">✕</button>
-          </div>
-          <div class="card-group-bar">
-            <label>Group:</label>
-            <input type="text" class="card-group-input" value="${groupName}" placeholder="e.g. Talents..." oninput="updateTableGroup(${id})">
           </div>
           <table>
             <thead>
@@ -518,20 +488,18 @@
       `;
     }
 
-    function addTable(customName, customGroup) {
+    function addTable(customName) {
       tableCounter++;
-      const name = customName || `Table #${tableCounter}`;
-      const group = customGroup || "General";
+      const name = customName || `Material #${tableCounter}`;
       const container = document.getElementById('tablesContainer');
       
       const wrapper = document.createElement('div');
-      wrapper.innerHTML = createTableHTML(tableCounter, name, group);
+      wrapper.innerHTML = createTableHTML(tableCounter, name);
       const cardElement = wrapper.firstElementChild;
       
       container.appendChild(cardElement);
       calculateCard(tableCounter);
-      updateGroupFilterDropdown();
-      filterTablesByGroup();
+      filterTablesByMaterial();
       return tableCounter;
     }
 
@@ -539,46 +507,16 @@
       const card = document.getElementById(`card-${id}`);
       if (card) {
         card.remove();
-        updateGroupFilterDropdown();
       }
     }
 
-    function updateTableGroup(id) {
-      const card = document.getElementById(`card-${id}`);
-      const groupInput = card.querySelector('.card-group-input');
-      const newGroup = groupInput.value.trim() || "General";
-      card.setAttribute('data-group', newGroup);
-      updateGroupFilterDropdown();
-    }
-
-    function updateGroupFilterDropdown() {
-      const select = document.getElementById('groupFilter');
-      const currentSelected = select.value;
-      const cards = document.querySelectorAll('.table-card');
-      const groups = new Set();
-
-      cards.forEach(card => {
-        const group = card.getAttribute('data-group') || "General";
-        groups.add(group);
-      });
-
-      select.innerHTML = '<option value="ALL">All Groups</option>';
-      groups.forEach(group => {
-        const option = document.createElement('option');
-        option.value = group;
-        option.textContent = group;
-        if (group === currentSelected) option.selected = true;
-        select.appendChild(option);
-      });
-    }
-
-    function filterTablesByGroup() {
-      const selectedGroup = document.getElementById('groupFilter').value;
+    function filterTablesByMaterial() {
+      const query = document.getElementById('materialFilterInput').value.toLowerCase().trim();
       const cards = document.querySelectorAll('.table-card');
 
       cards.forEach(card => {
-        const cardGroup = card.getAttribute('data-group') || "General";
-        if (selectedGroup === "ALL" || cardGroup === selectedGroup) {
+        const title = card.querySelector('.card-title-input').value.toLowerCase();
+        if (query === '' || title.includes(query)) {
           card.classList.remove('hidden');
         } else {
           card.classList.add('hidden');
@@ -624,7 +562,7 @@
       });
     }
 
-    // --- Profile, Local Cache & Cloud Sync ---
+    // --- Profile & Data Logic ---
     async function getMasterRecord() {
       try {
         const res = await fetch(`${BASE_URL}/latest`, {
@@ -632,7 +570,10 @@
         });
         if (res.ok) {
           const json = await res.json();
-          return json.record.profiles ? json.record : { profiles: {} };
+          // Ensure valid record structure
+          if (json.record && typeof json.record === 'object') {
+            return json.record.profiles ? json.record : { profiles: {} };
+          }
         }
       } catch (err) {
         console.error("Cloud fetch error:", err);
@@ -649,7 +590,7 @@
         return;
       }
 
-      // Cache active profile locally to this device
+      // Cache current active profile ID to device
       localStorage.setItem('resource_tracker_last_profile', profileId);
 
       statusEl.textContent = 'Saving...';
@@ -659,7 +600,6 @@
 
       cards.forEach(card => {
         const title = card.querySelector('.card-title-input').value;
-        const group = card.querySelector('.card-group-input').value;
         const rowsData = [];
         
         card.querySelectorAll('tbody tr').forEach(row => {
@@ -669,10 +609,11 @@
           });
         });
 
-        tablesPayload.push({ title, group, rows: rowsData });
+        tablesPayload.push({ title, rows: rowsData });
       });
 
       const masterData = await getMasterRecord();
+      if (!masterData.profiles) masterData.profiles = {};
       masterData.profiles[profileId] = tablesPayload;
 
       try {
@@ -686,7 +627,7 @@
         });
 
         if (response.ok) {
-          statusEl.textContent = `Saved to ${profileId}`;
+          statusEl.textContent = `Saved (${profileId})`;
           setTimeout(() => statusEl.textContent = 'Ready', 3000);
         } else {
           statusEl.textContent = 'Save failed.';
@@ -700,18 +641,17 @@
       const statusEl = document.getElementById('syncStatus');
       statusEl.textContent = `Loading ${profileId}...`;
 
-      // Cache active profile locally to this device
       localStorage.setItem('resource_tracker_last_profile', profileId);
 
       const masterData = await getMasterRecord();
-      const tablesData = masterData.profiles[profileId];
+      const tablesData = masterData.profiles ? masterData.profiles[profileId] : null;
 
       document.getElementById('tablesContainer').innerHTML = '';
       tableCounter = 0;
 
       if (Array.isArray(tablesData) && tablesData.length > 0) {
         tablesData.forEach(data => {
-          const newId = addTable(data.title, data.group || "General");
+          const newId = addTable(data.title);
           const card = document.getElementById(`card-${newId}`);
           const rows = card.querySelectorAll('tbody tr');
 
@@ -723,30 +663,31 @@
           });
           calculateCard(newId);
         });
-        statusEl.textContent = `Loaded ${profileId}`;
+        statusEl.textContent = `Loaded (${profileId})`;
       } else {
         statusEl.textContent = `New Profile (${profileId})`;
       }
     }
 
-    function onProfileIdChange() {
+    function loadActiveProfile() {
       const currentId = document.getElementById('profileIdInput').value.trim();
       if (currentId) {
         loadProfile(currentId);
+      } else {
+        alert("Please enter a Profile ID to load.");
       }
     }
 
-    // Device Startup Routine: Read cached profile from device
-    function initDeviceCache() {
+    // Startup Routine
+    function initApp() {
       const cachedProfile = localStorage.getItem('resource_tracker_last_profile');
       if (cachedProfile) {
         document.getElementById('profileIdInput').value = cachedProfile;
+        loadProfile(cachedProfile);
       }
-      onProfileIdChange();
     }
 
-    // Startup
-    initDeviceCache();
+    initApp();
   </script>
 </body>
 </html>
