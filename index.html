@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resource Tracker</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logoo.png">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -50,29 +53,16 @@
       box-shadow: 0 2px 8px rgba(2, 132, 199, 0.04);
     }
 
-    .title-area {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .site-logo {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      border-radius: 6px;
-    }
-
-    .title-text h1 {
+    .title-area h1 {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--sky-blue);
       letter-spacing: -0.01em;
     }
 
-    .title-text h1 span { color: var(--gold-accent); }
+    .title-area h1 span { color: var(--gold-accent); }
 
-    .title-text p {
+    .title-area p {
       font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: 1px;
@@ -470,11 +460,8 @@
 
   <div class="header">
     <div class="title-area">
-      <img src="logoo.png" alt="Resource Tracker Logo" class="site-logo">
-      <div class="title-text">
-        <h1>Resource <span>Tracker</span></h1>
-        <p>Multi-Profile Material Planner</p>
-      </div>
+      <h1>Resource <span>Tracker</span></h1>
+      <p>Multi-Profile Material Planner</p>
     </div>
     <div class="controls">
       <span class="sync-status" id="syncStatus">Ready</span>
